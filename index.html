@@ -700,6 +700,15 @@ document.querySelectorAll(".genderBox").forEach(box=>{
   };
 });
 
+function percent(points,max){
+  if(!max) return "0%";
+  return Math.round((points/max)*100) + "%";
+}
+
+function scoreText(points,max,extra=""){
+  return `${percent(points,max)} (${points}/${max}${extra})`;
+}
+
 function endAssessment(){
   clearInterval(timer);
   showPage(4);
@@ -711,10 +720,10 @@ function endAssessment(){
   document.getElementById("rClass").textContent=student.klass;
   document.getElementById("rSpillschoul").textContent=student.spillschoul;
   document.getElementById("rBasics").textContent=student.basics;
-  document.getElementById("rSpeaking").textContent=`${speakingPoints}/${speakingMax} (${speakingSeen} Items)`;
-  document.getElementById("rListening").textContent=`${listeningCorrect}/${listeningSeen}`;
-  document.getElementById("rGender").textContent=`${genderCorrect}/${genderSeen}`;
-  document.getElementById("rTotal").textContent=`${totalPoints}/${totalMax}`;
+  document.getElementById("rSpeaking").textContent=scoreText(speakingPoints,speakingMax,`; ${speakingSeen} Items`);
+  document.getElementById("rListening").textContent=scoreText(listeningCorrect,listeningSeen);
+  document.getElementById("rGender").textContent=scoreText(genderCorrect,genderSeen);
+  document.getElementById("rTotal").textContent=scoreText(totalPoints,totalMax);
 
   autoSaveResult();
 }
@@ -730,10 +739,10 @@ function buildResultData(){
     klass:student.klass,
     spillschoul:student.spillschoul,
     basics:student.basics,
-    speaking:`${speakingPoints}/${speakingMax}`,
-    listening:`${listeningCorrect}/${listeningSeen}`,
-    gender:`${genderCorrect}/${genderSeen}`,
-    total:`${totalPoints}/${totalMax}`,
+    speaking:scoreText(speakingPoints,speakingMax),
+    listening:scoreText(listeningCorrect,listeningSeen),
+    gender:scoreText(genderCorrect,genderSeen),
+    total:scoreText(totalPoints,totalMax),
     activity:"P2 Final Assessment"
   };
 }
